@@ -1,0 +1,16 @@
+# Directories
+.vs/
+bin/
+bin-int/
+
+# Files
+*.user
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+*.sln
+*.log
+Makefile
+
+# Specific Files
+Sandbox/imgui.ini
