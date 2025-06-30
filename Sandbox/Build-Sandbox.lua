@@ -18,12 +18,15 @@ project "Sandbox"
 	{
 		"Source",
 		"../SEngine/Source",
-		"../SEngine/Vendor"
+		"../SEngine/Vendor",
+		"../SEngine/Vendor/GLFW/include",
+		"../SEngine/Vendor/Glad/include",
+		"../SEngine/Vendor/Vulkan/Include"
 	}
 
 	links
 	{
-		"SEngine" 
+		"SEngine"
 	}
 
 	filter "system:windows"

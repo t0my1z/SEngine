@@ -1,6 +1,0 @@
-
-namespace SE
-{
-	void Print();
-
-}
