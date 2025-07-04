@@ -5,9 +5,10 @@ namespace SE
 {
 	bool OGLRenderer::Init(unsigned int width, unsigned int height)
 	{
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		if (status == 0)
 		{
-			Logger::log(1, "Failed to initialize GLAD\n");
+			SE_CORE_ASSERT(status, "Failed to initialize GLAD");
 			return false;
 		}
 

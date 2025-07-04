@@ -14,7 +14,7 @@ namespace SE
 
 		if (!textureData) 
 		{
-			Logger::log(1, "%s error: could not load file '%s'\n", __FUNCTION__, TexturePath.c_str()); 
+			SE_CORE_INFO("{0} error: could not load file {1}", TexturePath.c_str(), TexturePath.c_str()); 
 			stbi_image_free(textureData); 
 			return false; 
 		}
@@ -33,7 +33,9 @@ namespace SE
 
 		stbi_image_free(textureData);
 
-		Logger::log(1, "%s: texture '%s' loaded (%dx%d, %d channels)\n", __FUNCTION__, TexturePath.c_str(), TexWidth, TexHeight, NumberOfChannels); 
+		SE_CORE_INFO("{0}: texture loaded. Width: {1}, Height: {2}, NumOfChannels: {3}", 
+			TexturePath, TexWidth, TexHeight, NumberOfChannels);  
+
 		return true;
 	}
 

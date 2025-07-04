@@ -18,6 +18,7 @@ project "Sandbox"
 	{
 		"Source",
 		"../SEngine/Source",
+		"../SEngine/Vendor/spdlog/include",
 		"../SEngine/Vendor",
 		"../SEngine/Vendor/GLFW/include",
 		"../SEngine/Vendor/Glad/include",
@@ -35,6 +36,11 @@ project "Sandbox"
 		defines
 		{
 			"SE_PLATFORM_WINDOWS"
+		}
+
+		buildoptions 
+		{
+			"/utf-8"
 		}
 
 	filter "configurations:Debug"

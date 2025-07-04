@@ -31,6 +31,7 @@ project "SEngine"
 	includedirs 
 	{
 		"Source",
+		"Vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.Vulkan}",
@@ -58,6 +59,11 @@ project "SEngine"
 			"SE_PLATFORM_WINDOWS",
 			"SE_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
+		}
+
+		buildoptions 
+		{
+			"/utf-8"
 		}
 
 	filter "configurations:Debug"

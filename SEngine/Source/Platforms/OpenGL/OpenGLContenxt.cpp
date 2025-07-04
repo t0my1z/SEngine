@@ -1,6 +1,5 @@
 #include "sepch.h" 
 #include "OpenGLContenxt.h"
-#include "Core/Logger.h" 
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

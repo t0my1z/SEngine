@@ -1,6 +1,5 @@
 #include "sepch.h" 
 #include "VulkanContext.h"
-#include "Core/Logger.h"
 #include "glm/vec2.hpp" 
 
 namespace SE
@@ -15,13 +14,13 @@ namespace SE
     {
         if (!glfwVulkanSupported())
         {
-            Logger::log(1, "%s: Vulkan is not supported\n", __FUNCTION__);
+            SE_CORE_INFO("Vulkan is not supported");
             return false;
         }
 
         if (!InitVulkan())
         {
-            Logger::log(1, "%s: Failed to Init Vulkan Context\n", __FUNCTION__);
+            SE_CORE_INFO("Failed to Init Vulkan Context");
             return false;
         }
 
@@ -52,21 +51,22 @@ namespace SE
 
         if (extensionCount == 0)
         {
-            Logger::log(1, "%s error: no Vulkan extensions found, need at least 'VK_KHR_surface'\n", __FUNCTION__);
+            SE_CORE_INFO("No Vulkan extensions found, need at least 'VK_KHR_surface'");
             return false;
         }
 
-        Logger::log(1, "%s: Found %u Vulkan extensions\n", __FUNCTION__, extensionCount);
+        SE_CORE_INFO("Found {0} Vulkan extensions:", extensionCount);
+
         for (unsigned int i = 0; i < extensionCount; ++i)
         {
-            Logger::log(1, "%s: %s\n", __FUNCTION__, std::string(extensions[i]).c_str());
+            SE_CORE_INFO("Vulkan Extension: {0}", std::string(extensions[i]).c_str());    
         }
 
-        VkInstanceCreateInfo CreateInfo{};
-        CreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-        CreateInfo.pNext = nullptr;
-        CreateInfo.pApplicationInfo = &AppInfo;
-        CreateInfo.enabledExtensionCount = extensionCount;
+        VkInstanceCreateInfo CreateInfo{}; 
+        CreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO; 
+        CreateInfo.pNext = nullptr; 
+        CreateInfo.pApplicationInfo = &AppInfo; 
+        CreateInfo.enabledExtensionCount = extensionCount; 
         CreateInfo.ppEnabledExtensionNames = extensions;
         CreateInfo.enabledLayerCount = 0;
 
@@ -75,7 +75,7 @@ namespace SE
         result = vkCreateInstance(&CreateInfo, nullptr, &m_Instance);
         if (result != VK_SUCCESS)
         {
-            Logger::log(1, "%s: Could not create Vulkan instance (%i)\n", __FUNCTION__, result);
+            SE_CORE_INFO("Could not create Vulkan instance");
             return false;
         }
 
@@ -84,20 +84,20 @@ namespace SE
         vkEnumeratePhysicalDevices(m_Instance, &physicalDeviceCount, nullptr);
         if (physicalDeviceCount == 0)
         {
-            Logger::log(1, "%s: No Vulkan capable GPU found\n", __FUNCTION__);
+            SE_CORE_INFO("No Vulkan capable GPU found");
             return false;
         }
 
         std::vector<VkPhysicalDevice> devices;
         devices.resize(physicalDeviceCount);
         vkEnumeratePhysicalDevices(m_Instance, &physicalDeviceCount, devices.data());
-        Logger::log(1, "%s: Found %u physical device(s)\n", __FUNCTION__, physicalDeviceCount);
+        SE_CORE_INFO("Found {0} physical devices", physicalDeviceCount); 
 
         //Create the Vulkan Surface
         result = glfwCreateWindowSurface(m_Instance, m_Window, nullptr, &m_Surface);
         if (result != VK_SUCCESS)
         {
-            Logger::log(1, "%s: Could not create Vulkan surface\n", __FUNCTION__);
+            SE_CORE_INFO("Could not create Vulkan surface");
             return false;
         }
 
@@ -110,8 +110,7 @@ namespace SE
 
     void VulkanContext::Shutdown()
     {
-        Logger::log(1, "%s: Terminating Vulkan Context\n", __FUNCTION__);
-
+        SE_CORE_INFO("Terminating Vulkan Context");
         vkDestroySurfaceKHR(m_Instance, m_Surface, nullptr);
         vkDestroyInstance(m_Instance, nullptr);
     }

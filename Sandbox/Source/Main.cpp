@@ -33,7 +33,7 @@ public:
 
 	bool OnKeyPressedEvent(SE::KeyPressedEvent& event)
 	{
-		Logger::log(1, "%s: key was pressed\n");
+		SE_INFO("Key was pressed: {}", (char)event.GetKeyCode());
 		return false;
 	}
 

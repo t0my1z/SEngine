@@ -13,8 +13,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Core/Logger.h"
-
+#include "Core/Log.h"
  
 #ifdef SE_PLATFORM_WINDOWS 
 #include <Windows.h>

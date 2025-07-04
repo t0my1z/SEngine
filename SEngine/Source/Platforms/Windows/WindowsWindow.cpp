@@ -1,6 +1,5 @@
 #include "sepch.h" 
 #include "WindowsWindow.h"
-#include "Core/Logger.h"
 #include "Renderer/RendererAPI.h"
 #include "Platforms/OpenGL/OpenGLContenxt.h"
 #include "Platforms/Vulkan/VulkanContext.h"
@@ -25,7 +24,7 @@ namespace SE
         //Init GLFW
         if (!glfwInit())
         {
-            Logger::log(1, "%s: glfwInit() error\n", __FUNCTION__);
+            SE_CORE_INFO("Failed to initialize GLFW");
 
             return false;
         }
@@ -51,7 +50,7 @@ namespace SE
 
         if (!m_Window)
         {
-            Logger::log(1, "%s: Could not create window\n", __FUNCTION__);
+            SE_CORE_INFO("Failed to create a window");
             glfwTerminate();
             return false;
         }
@@ -187,7 +186,7 @@ namespace SE
 
     void WindowsWindow::Shutdown()
     {
-        Logger::log(1, "%s: Terminating Window\n", __FUNCTION__); 
+        SE_CORE_INFO("Terminating Window"); 
         m_GraphicContext->Shutdown(); 
         glfwDestroyWindow(m_Window); 
         glfwTerminate(); 
