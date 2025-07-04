@@ -1,7 +1,7 @@
 #include "sepch.h" 
 #include "VulkanContext.h"
 #include "Core/Logger.h"
-#include "vec2.hpp"
+#include "glm/vec2.hpp" 
 
 namespace SE
 {
@@ -11,19 +11,21 @@ namespace SE
 
     }
 
-    void VulkanContext::Init()
+    bool VulkanContext::Init(unsigned int width, unsigned int height)
     {
         if (!glfwVulkanSupported())
         {
             Logger::log(1, "%s: Vulkan is not supported\n", __FUNCTION__);
-            return;
+            return false;
         }
 
         if (!InitVulkan())
         {
             Logger::log(1, "%s: Failed to Init Vulkan Context\n", __FUNCTION__);
-            return;
+            return false;
         }
+
+        return true;
     }
 
     bool VulkanContext::InitVulkan()
@@ -55,7 +57,7 @@ namespace SE
         }
 
         Logger::log(1, "%s: Found %u Vulkan extensions\n", __FUNCTION__, extensionCount);
-        for (int i = 0; i < extensionCount; ++i)
+        for (unsigned int i = 0; i < extensionCount; ++i)
         {
             Logger::log(1, "%s: %s\n", __FUNCTION__, std::string(extensions[i]).c_str());
         }
@@ -102,7 +104,7 @@ namespace SE
         return true;
     }
 
-    void VulkanContext::SwapBuffers()
+    void VulkanContext::Update()
     {
     }
 

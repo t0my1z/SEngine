@@ -9,12 +9,10 @@
 
 #include "Core/Core.h"
 #include "OGLShader.h"
-#include "Advanced/OGLMesh.h"
-
-class OGLShader;
-class OGLFrameBuffer;
-class OGLVertexArray;
-class OGLTexture;  
+#include "Advanced/OGLModel.h"
+#include "OGLFrameBuffer.h"
+#include "OGLVertexArray.h"
+#include "OGLTexture.h"
 
 namespace SE
 {
@@ -22,7 +20,7 @@ namespace SE
 	{
 	public:
 		bool Init(unsigned int width, unsigned int height);
-		void SetSize(unsigned int width, unsigned int height);
+		virtual void SetSize(unsigned int width, unsigned int height) override; 
 		void CleanUp();
 		void UploadData(OGLMesh vertexData); 
 		void Draw();  

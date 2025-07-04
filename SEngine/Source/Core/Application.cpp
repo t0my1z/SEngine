@@ -1,6 +1,7 @@
 #include "sepch.h" 
 #include "Application.h"
 #include "Timestep.h"
+#include "Renderer/GraphicsContext.h"
 #include <GLFW/glfw3.h>
 
 namespace SE
@@ -85,7 +86,6 @@ namespace SE
 
 	bool Application::OnWindowResize(WindowResizeEvent& _event)
 	{
-
 		if (_event.GetWidth() == 0 || _event.GetHeight() == 0)
 		{
 			m_Minimized = true;
@@ -94,6 +94,7 @@ namespace SE
 
 		m_Minimized = false;
 		//Renderer::OnWindowResize(_event.GetWidth(), _event.GetHeight());
+		m_Window->GetGraphicContext()->GetRenderer()->SetSize(_event.GetWidth(), _event.GetHeight()); 
 
 		return false;
 	}

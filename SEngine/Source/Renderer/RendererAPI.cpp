@@ -3,5 +3,5 @@
 
 namespace SE
 {
-	RendererAPI::API RendererAPI::s_API = API::Vulkan; 
+	RendererAPI::API RendererAPI::s_API = API::OpenGL; 
 }

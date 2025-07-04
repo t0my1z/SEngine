@@ -2,6 +2,8 @@
 #include <string>
 #include "Core.h"
 #include "Events/Event.h"
+#include "Renderer/GraphicsContext.h"
+
 
 namespace SE
 {
@@ -38,6 +40,8 @@ namespace SE
 		virtual void SetEventCallback(const EventCallbackFn& _callback) = 0;
 
 		virtual void* GetNativeWindow() const = 0;
+
+		virtual GraphicsContext* GetGraphicContext() const = 0;
 
 		//Gets implemented per platform, in their respective cpp
 		static Scope<Window> Create(const WindowProps& props = WindowProps());

@@ -7,23 +7,43 @@
 
 namespace SE
 {
-	OpenGLContext::OpenGLContext(GLFWwindow* InWindow)
+	OpenGLContext::OpenGLContext(GLFWwindow* InWindow) 
 		: m_Window(InWindow)
 	{
 	}
 
-	void OpenGLContext::Init()
+	bool OpenGLContext::Init(unsigned int width, unsigned int height)
 	{
 		glfwMakeContextCurrent(m_Window);
 
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		m_Renderer = CreateScope<OGLRenderer>();
+		if (!m_Renderer->Init(width, height)) 
 		{
-			Logger::log(1, "Failed to initialize GLAD\n");
+			return false; 
 		}
+
+		m_Model = CreateScope<OGLModel>(); 
+		m_Model->Init(); 
+
+		m_Renderer->UploadData(m_Model->GetVertexData()); 
+
+		return true; 
 	}
 
-	void OpenGLContext::SwapBuffers()
+	void OpenGLContext::Update() 
 	{
+		m_Renderer->Draw();
+
 		glfwSwapBuffers(m_Window);
+	}
+
+	void OpenGLContext::Shutdown()
+	{
+		m_Renderer->CleanUp();
+	}
+
+	Renderer* OpenGLContext::GetRenderer() const
+	{
+		return m_Renderer.get();  
 	}
 }

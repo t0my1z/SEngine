@@ -11,9 +11,10 @@ namespace SE
 	public:
 		VulkanContext(GLFWwindow* InWindow, const std::string& InAppName); 
 
-		virtual void Init() override;
-		virtual void SwapBuffers() override;
+		virtual bool Init(unsigned int width, unsigned int height) override; 
+		virtual void Update() override; 
 		virtual void Shutdown() override;
+		virtual Renderer* GetRenderer() const override { return nullptr; }
 
 	private:
 		bool InitVulkan();

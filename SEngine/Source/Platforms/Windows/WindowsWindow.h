@@ -1,7 +1,6 @@
 #pragma once
 #include "Core/Window.h"
 #include "Core/Core.h"
-#include "Renderer/GraphicsContext.h"
 
 struct GLFWwindow; 
 
@@ -25,9 +24,11 @@ namespace SE
 		virtual void SetVSync(bool enabled);
 		virtual bool IsVSync() const;
 
+		virtual GraphicsContext* GetGraphicContext() const override;
+
 	private:
 		GLFWwindow* m_Window = nullptr; 
-		Scope<GraphicsContext> m_Context; 
+		Scope<GraphicsContext> m_GraphicContext; 
 
 		struct WindowData
 		{

@@ -4,6 +4,7 @@
 #include "Renderer/RendererAPI.h"
 #include "Platforms/OpenGL/OpenGLContenxt.h"
 #include "Platforms/Vulkan/VulkanContext.h"
+
 #include <GLFW/glfw3.h> 
 
 #include "Events/ApplicationEvent.h"
@@ -12,14 +13,14 @@
 
 namespace SE
 {
-    SE::WindowsWindow::WindowsWindow(const WindowProps& props)
+   WindowsWindow::WindowsWindow(const WindowProps& props)
     {
         m_Data.m_Title = props.m_Title;
         m_Data.m_Height = props.m_Height;
         m_Data.m_Width = props.m_Width;
     }
 
-    bool SE::WindowsWindow::Init()
+    bool WindowsWindow::Init()
     {
         //Init GLFW
         if (!glfwInit())
@@ -33,10 +34,12 @@ namespace SE
         switch (RendererAPI::GetAPI()) 
         {
             case RendererAPI::API::OpenGL:
-                glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); 
+                glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+                glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6); 
+                glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); 
                 break;
             case RendererAPI::API::Vulkan:
-                glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); 
+                 
                 glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API); 
                 break;
             case RendererAPI::API::None:
@@ -57,17 +60,21 @@ namespace SE
         switch (RendererAPI::GetAPI()) 
         {
             case RendererAPI::API::OpenGL:
-                m_Context = CreateScope<OpenGLContext>(m_Window); 
+                m_GraphicContext = CreateScope<OpenGLContext>(m_Window); 
                 break;
             case RendererAPI::API::Vulkan: 
-                m_Context = CreateScope<VulkanContext>(m_Window, m_Data.m_Title); 
+                m_GraphicContext = CreateScope<VulkanContext>(m_Window, m_Data.m_Title); 
                 break;
             case RendererAPI::API::None: 
-                m_Context = nullptr;
+                m_GraphicContext = nullptr;
                 break;
         }
 
-        m_Context->Init();
+        if (!m_GraphicContext->Init(m_Data.m_Width, m_Data.m_Height))
+        {
+            glfwTerminate(); 
+            return false; 
+        }
 
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
@@ -170,19 +177,18 @@ namespace SE
 
     void WindowsWindow::Update()
     {
-        while (!glfwWindowShouldClose(m_Window)) 
-        { 
-            /* swap buffers */
-            m_Context->SwapBuffers(); 
-            /* poll events in a loop */
-            glfwPollEvents();
-        }
+         SetVSync(true); 
+
+         /* Update Graphics -> Swap Buffers, Render draw, etc */
+         m_GraphicContext->Update();  
+         /* poll events in a loop */
+         glfwPollEvents();
     }
 
     void WindowsWindow::Shutdown()
     {
         Logger::log(1, "%s: Terminating Window\n", __FUNCTION__); 
-        m_Context->Shutdown(); 
+        m_GraphicContext->Shutdown(); 
         glfwDestroyWindow(m_Window); 
         glfwTerminate(); 
     }
@@ -215,5 +221,10 @@ namespace SE
     bool WindowsWindow::IsVSync() const
     {
         return m_Data.m_VSync;
+    }
+
+    GraphicsContext* WindowsWindow::GetGraphicContext() const
+    {
+        return m_GraphicContext.get(); 
     }
 }
